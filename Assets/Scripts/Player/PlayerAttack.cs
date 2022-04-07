@@ -32,7 +32,6 @@ namespace Player
         //Invoke OnAttack When Player Is Shooting
         private void OnAttack()
         {
-            Debug.Log("Attack");
             if (attack != null)
                 attack.Attack(attackPoint, attackRange);
         }

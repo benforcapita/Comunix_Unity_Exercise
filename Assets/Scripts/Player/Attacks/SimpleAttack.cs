@@ -8,12 +8,12 @@ namespace Player.Attacks
     {
         public override void Attack(Transform attackPoint, float attackRange)
         {
+            Debug.Log("Attack");
             //instantiate attack prefab
             var position = attackPoint.position;
-            var hit = Physics2D.Raycast(position, attackPoint.up, attackRange);
-            if (hit.collider != null)
-            {
-            }
+            var bullet = bulletPool[bulletPool.Count - 1];
+            bullet.SetActive(true);
+
         }
     }
 }

@@ -21,7 +21,6 @@ namespace Player
                 bullet.transform.SetParent(transform);
                 bullet.transform.localPosition = Vector3.zero;
                 bullet.transform.localRotation = Quaternion.identity;
-                bullet.transform.localScale = Vector3.one;
                 bulletPool.Add(bullet);
             }
         }
