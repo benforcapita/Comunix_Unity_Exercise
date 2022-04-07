@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Player.Attacks
@@ -8,12 +9,12 @@ namespace Player.Attacks
     {
         public override void Attack(Transform attackPoint, float attackRange)
         {
-            Debug.Log("Attack");
-            //instantiate attack prefab
             var position = attackPoint.position;
-            var bullet = bulletPool[bulletPool.Count - 1];
+            var bullet = GetBullet();
+            bullet.transform.position = position;
+            bullet.transform.rotation = attackPoint.rotation;
             bullet.SetActive(true);
-
+            bullet.GetComponent<Bullet>().Shoot(position, attackSpeed);
         }
     }
 }
