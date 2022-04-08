@@ -1,16 +1,48 @@
 using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Player
 {
     public class PlayerController : MonoBehaviour
     {
+        [SerializeField] private bl_Joystick _blJoystick;
+        [SerializeField]private bool useJoystick = false;
+        [ShowIf("useJoystick")]
+        [SerializeField] private float _speed = 5f;
+        [ShowIf("useJoystick")]
+        [SerializeField] private Vector3 joystickMovement;
+
         private void Update()
         {
-            if (Input.GetAxisRaw("Fire1") > 0)
+            if(Application.platform == RuntimePlatform.WindowsPlayer||Application.platform == RuntimePlatform.WindowsEditor)
             {
-                UniRx.MessageBroker.Default.Publish(new PlayerAttackEventArgs());
+                if (!useJoystick)
+                {
+                    Move();
+                }
+                else
+                {
+                    MoveWithJoystick();
+                }
+                
             }
+            else
+            {
+                MoveWithJoystick();
+            }
+        }
+
+        private void MoveWithJoystick()
+        {
+            joystickMovement =  new Vector3(_blJoystick.Horizontal, 0, _blJoystick.Vertical).normalized * _speed;
+            UniRx.MessageBroker.Default.Publish(new HorizontalPlayerMoveEventArgs(joystickMovement.x));
+            UniRx.MessageBroker.Default.Publish(new VerticalPlayerMoveEventArgs(joystickMovement.y));
+        }
+
+        private static void Move()
+        {
+            UniRx.MessageBroker.Default.Publish(new PlayerAttackEventArgs(Input.GetAxisRaw("Fire1")));
 
             UniRx.MessageBroker.Default.Publish(Input.GetAxisRaw("Horizontal") != 0
                 ? new HorizontalPlayerMoveEventArgs(Input.GetAxisRaw("Horizontal"))
@@ -35,6 +67,7 @@ namespace Player
     public class HorizontalPlayerMoveEventArgs
     {
         public float AxisValue { get; set; }
+
         public HorizontalPlayerMoveEventArgs(float getAxisRaw)
         {
             AxisValue = getAxisRaw;

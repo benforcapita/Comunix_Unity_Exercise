@@ -6,6 +6,9 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+/**
+ * This class is responsible for the player Sound
+ */
 public class PlayerSoundController : MonoBehaviour
 {
     [SerializeField] private AudioSource audioSource;

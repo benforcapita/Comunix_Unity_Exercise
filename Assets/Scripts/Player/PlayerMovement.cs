@@ -16,12 +16,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Vector2 movement = Vector2.zero;
     private IDisposable _movementSubHorizontal = null;
     private IDisposable _movementSubVertical = null;
+    [SerializeField] private float playerScale;
+    
 
     private void OnEnable()
     {
         rb.gravityScale = gravity;
          _movementSubHorizontal = MessageBroker.Default.Receive<HorizontalPlayerMoveEventArgs>().ObserveOnMainThread().Subscribe(SetMovement);
        _movementSubVertical =  MessageBroker.Default.Receive<VerticalPlayerMoveEventArgs>().ObserveOnMainThread().Subscribe(SetJump);
+       transform.localScale = new Vector3(playerScale, playerScale, playerScale);
     }
 
     private void SetJump(VerticalPlayerMoveEventArgs obj)
@@ -34,11 +37,11 @@ public class PlayerMovement : MonoBehaviour
         movement.Set(obj.AxisValue, movement.y);
         if (movement.x > 0)
         {
-          transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
+          transform.localScale = new Vector3(playerScale, playerScale, playerScale);
         }
         else if (movement.x < 0)
         {
-            transform.localScale = new Vector3(-0.4f, 0.4f, 0.4f);
+            transform.localScale = new Vector3(-(playerScale), playerScale, playerScale);
         }
     }
 

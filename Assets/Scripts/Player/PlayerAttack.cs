@@ -1,4 +1,5 @@
 using System;
+using UniRx;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -11,6 +12,7 @@ namespace Player
         [SerializeField] private Transform attackPoint;
         [SerializeField] private float attackRange;
         [SerializeField] private bool isShooting = false;
+        private IDisposable fireSubscription;
         private bool IsShooting {
             set
             {
@@ -28,6 +30,10 @@ namespace Player
         private void OnEnable()
         {
             _onAttack = OnAttack;
+            fireSubscription = MessageBroker.Default.Receive<PlayerAttackEventArgs>().ObserveOnMainThread().Subscribe(args =>
+            {
+                IsShooting = args.fireAxis > 0;
+            });
         }
         //Invoke OnAttack When Player Is Shooting
         private void OnAttack()
@@ -35,10 +41,10 @@ namespace Player
             if (attack != null)
                 attack.Attack(attackPoint, attackRange);
         }
-        
-        private void Update()
+
+        private void OnDisable()
         {
-            IsShooting = Input.GetAxisRaw("Fire1") >0;
+            fireSubscription.Dispose();
         }
     }
 }

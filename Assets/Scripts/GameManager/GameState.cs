@@ -8,6 +8,12 @@ using UnityEngine.Serialization;
 
 namespace GameManager
 {
+/**
+ * <summary>
+ * This class is responsible for managing the game state.
+ * It is managing lives and points of the player.
+ * </summary>
+ */
     public class GameState : MonoBehaviour
     {
         [SerializeField]private int score;

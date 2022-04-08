@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace UI
 {
+    /*
+     * Disabling the UI when the game starts
+     */
     public class StartGamePanel : MonoBehaviour
     {
       private IDisposable _startGameSub;
