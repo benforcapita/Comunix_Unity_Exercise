@@ -95,7 +95,6 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -2899871847751181492}
-  - {fileID: 3808953880105818882}
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -249,10 +248,7 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: isAttacking
-    m_EventTreshold: 0
+  m_Conditions: []
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -8216773284776529743}
   m_Solo: 0

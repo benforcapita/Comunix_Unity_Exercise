@@ -1,4 +1,6 @@
 using System;
+using Player;
+using UniRx;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -12,25 +14,29 @@ public class PlayerMovement : MonoBehaviour
     public bool grounded = false;
     public Rigidbody2D rb;
     [SerializeField] private Vector2 movement = Vector2.zero;
-    [SerializeField] private SpriteRenderer spriteRenderer;
 
     private void OnEnable()
     {
         rb.gravityScale = gravity;
+        MessageBroker.Default.Receive<HorizontalPlayerMoveEventArgs>().ObserveOnMainThread().Subscribe(SetMovement);
+        MessageBroker.Default.Receive<VerticalPlayerMoveEventArgs>().ObserveOnMainThread().Subscribe(SetJump);
     }
 
-    void Update()
+    private void SetJump(VerticalPlayerMoveEventArgs obj)
     {
-        //listen for input
-        movement.Set(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        //when moving, flip the sprite
+        movement.Set(movement.x,obj.AxisValue);
+    }
+
+    private void SetMovement(HorizontalPlayerMoveEventArgs obj)
+    {
+        movement.Set(obj.AxisValue, movement.y);
         if (movement.x > 0)
         {
-            spriteRenderer.flipX = false;
+          transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
         }
         else if (movement.x < 0)
         {
-            spriteRenderer.flipX = true;
+            transform.localScale = new Vector3(-0.4f, 0.4f, 0.4f);
         }
     }
 

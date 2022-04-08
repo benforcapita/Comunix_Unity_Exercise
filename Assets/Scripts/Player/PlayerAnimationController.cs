@@ -1,3 +1,4 @@
+using System;
 using UniRx;
 using UnityEngine;
 
@@ -7,8 +8,10 @@ namespace Player
     {
         //animator
         [SerializeField] private Animator animator;
-        private static readonly int IsWalking = Animator.StringToHash("isWalking");
-        private static readonly int IsAttacking = Animator.StringToHash("isAttacking");
+        private static readonly int IsWalking = Animator.StringToHash("speed");
+        private static readonly int IsAttacking = Animator.StringToHash("attack");
+        private static readonly int IsAttackingSpecial = Animator.StringToHash("special");
+
         [SerializeField] private bool isWalking;
         
 
@@ -26,9 +29,15 @@ namespace Player
 
         private void MoveHorizontal(HorizontalPlayerMoveEventArgs obj)
         {
-            Debug.Log(obj.AxisValue + ":" + (obj.AxisValue!=0));
             isWalking = (obj.AxisValue != 0);
-            animator.SetBool(IsWalking, obj.AxisValue != 0);
+            if (isWalking)
+            {
+                animator.SetFloat(IsWalking, Math.Abs(obj.AxisValue));
+            }
+            else
+            {
+                animator.SetFloat(IsWalking, 0);
+            }
         }
     }
 }
