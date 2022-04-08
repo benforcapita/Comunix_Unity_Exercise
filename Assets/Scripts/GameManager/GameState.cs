@@ -16,13 +16,15 @@ namespace GameManager
         [SerializeField] private TextMeshProUGUI livesText;
          [SerializeField] private GameObject player;
          [SerializeField] private List<GameObject> initialBombs;
+         IDisposable bombHitSub = null;
+         IDisposable OrcHitSub  = null;
 
 
 
         private void OnEnable()
         {
-            MessageBroker.Default.Receive<BombHitEventArgs>().ObserveOnMainThread().Subscribe(AddScore);
-            MessageBroker.Default.Receive<OrcHitEventArgs>().ObserveOnMainThread().Subscribe(LoseLife);
+            bombHitSub = MessageBroker.Default.Receive<BombHitEventArgs>().ObserveOnMainThread().Subscribe(AddScore);
+            OrcHitSub = MessageBroker.Default.Receive<OrcHitEventArgs>().ObserveOnMainThread().Subscribe(LoseLife);
             Time.timeScale = 0;
 
         }
@@ -51,6 +53,7 @@ namespace GameManager
         {
             Time.timeScale = 1;
             player.SetActive(true);
+            player.GetComponent<AnchorGameObject>().enabled = false;
             foreach (var bomb in initialBombs)
             {
                 bomb.SetActive(true);
@@ -58,5 +61,10 @@ namespace GameManager
             MessageBroker.Default.Publish(new GameStartEventArgs());
         }
 
+        private void OnDisable()
+        {
+            bombHitSub.Dispose();
+            OrcHitSub.Dispose();
+        }
     }
 }

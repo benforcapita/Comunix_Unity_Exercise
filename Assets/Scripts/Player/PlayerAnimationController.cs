@@ -13,12 +13,14 @@ namespace Player
         private static readonly int IsAttackingSpecial = Animator.StringToHash("special");
 
         [SerializeField] private bool isWalking;
+        private IDisposable HorizontalMovementSub = null;
+        private IDisposable VerticalMovementSub = null;
         
 
         private void OnEnable()
         {
-            MessageBroker.Default.Receive<HorizontalPlayerMoveEventArgs>().ObserveOnMainThread().Subscribe(MoveHorizontal);
-            MessageBroker.Default.Receive<PlayerAttackEventArgs>().ObserveOnMainThread().Subscribe(PlayerAttackAnimation);
+           HorizontalMovementSub =  MessageBroker.Default.Receive<HorizontalPlayerMoveEventArgs>().ObserveOnMainThread().Subscribe(MoveHorizontal);
+            VerticalMovementSub = MessageBroker.Default.Receive<PlayerAttackEventArgs>().ObserveOnMainThread().Subscribe(PlayerAttackAnimation);
         }
 
         private void PlayerAttackAnimation(PlayerAttackEventArgs obj)
@@ -38,6 +40,12 @@ namespace Player
             {
                 animator.SetFloat(IsWalking, 0);
             }
+        }
+
+        private void OnDisable()
+        {
+            HorizontalMovementSub.Dispose();
+            VerticalMovementSub.Dispose();
         }
     }
 }

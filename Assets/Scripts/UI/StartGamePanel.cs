@@ -1,16 +1,24 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 
-public class StartGamePanel : MonoBehaviour
+namespace UI
 {
-    private void OnEnable()
+    public class StartGamePanel : MonoBehaviour
     {
-        MessageBroker.Default.Receive<GameStartEventArgs>().ObserveOnMainThread().Subscribe(args =>
+      private IDisposable _startGameSub;
+
+        private void OnEnable()
         {
-            this.gameObject.SetActive(false);
-        });
+            _startGameSub = MessageBroker.Default.Receive<GameStartEventArgs>().ObserveOnMainThread().Subscribe(args =>
+            {
+                this.gameObject.SetActive(false);
+            });
+        }
+
+        private void OnDisable()
+        {
+            _startGameSub.Dispose();
+        }
     }
 }

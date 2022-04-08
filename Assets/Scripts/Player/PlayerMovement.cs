@@ -14,12 +14,14 @@ public class PlayerMovement : MonoBehaviour
     public bool grounded = false;
     public Rigidbody2D rb;
     [SerializeField] private Vector2 movement = Vector2.zero;
+    private IDisposable _movementSubHorizontal = null;
+    private IDisposable _movementSubVertical = null;
 
     private void OnEnable()
     {
         rb.gravityScale = gravity;
-        MessageBroker.Default.Receive<HorizontalPlayerMoveEventArgs>().ObserveOnMainThread().Subscribe(SetMovement);
-        MessageBroker.Default.Receive<VerticalPlayerMoveEventArgs>().ObserveOnMainThread().Subscribe(SetJump);
+         _movementSubHorizontal = MessageBroker.Default.Receive<HorizontalPlayerMoveEventArgs>().ObserveOnMainThread().Subscribe(SetMovement);
+       _movementSubVertical =  MessageBroker.Default.Receive<VerticalPlayerMoveEventArgs>().ObserveOnMainThread().Subscribe(SetJump);
     }
 
     private void SetJump(VerticalPlayerMoveEventArgs obj)
@@ -54,5 +56,11 @@ public class PlayerMovement : MonoBehaviour
 
         //check if grounded
         grounded = rb.velocity.y == 0;
+    }
+
+    private void OnDisable()
+    {
+        _movementSubHorizontal?.Dispose();
+        _movementSubVertical?.Dispose();
     }
 }
