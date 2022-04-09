@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -32,7 +33,8 @@ public class ScoreTable : MonoBehaviour
   public void CreateTable()
   {
     var scores = HighScore.GetHighScore();
-    foreach (var score in scores)
+    //scores sort by value descending
+    foreach (var score in scores.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value))
     {
       var row = Instantiate(tableRowPrefab, tableContent);
       row.GetComponent<ScoreRowPopulator>().Populate(score.Key, score.Value);

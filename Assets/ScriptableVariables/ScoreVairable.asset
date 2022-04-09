@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be58e8f106ca9264db512ac44dc7c7cd, type: 3}
   m_Name: ScoreVairable
   m_EditorClassIdentifier: 
-  initialValue: 0
+  initialValue: 20
   updateValue: 0

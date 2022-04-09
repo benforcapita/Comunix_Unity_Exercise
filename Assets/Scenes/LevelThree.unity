@@ -595,7 +595,7 @@ MonoBehaviour:
   scoreVariable: {fileID: 11400000, guid: bcecab9bab0783047a3d67efd195b66c, type: 2}
   livesVariable: {fileID: 11400000, guid: 966455f33fe1d1846beb4b8182bd807a, type: 2}
   gameOverPanel: {fileID: 663610387}
-  nextLevel: MainMenu
+  nextLevel: EndScene
   bombs: []
   loader: {fileID: 342220328}
 --- !u!114 &342220328
@@ -2929,7 +2929,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7987046085484854582, guid: a1b87898d929d3646bfce0e56a54bdce, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1b87898d929d3646bfce0e56a54bdce, type: 3}
@@ -3610,7 +3610,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7987046085484854582, guid: a1b87898d929d3646bfce0e56a54bdce, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1b87898d929d3646bfce0e56a54bdce, type: 3}
