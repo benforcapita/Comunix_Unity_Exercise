@@ -9,7 +9,7 @@ public class SceneLoader : MonoBehaviour
 {
     private static readonly List<string> SceneNames = new List<string>()
     {
-        "MainMenu", "LevelOne","LevelTwo","LevelThree"
+        "MainMenu", "LevelOne","LevelTwo","LevelThree","ScoreScene"
     };
 
     [SerializeField] private bool isARestart;

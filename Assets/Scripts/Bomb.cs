@@ -45,6 +45,15 @@ public class Bomb : MonoBehaviour
         {
             MessageBroker.Default.Publish(new LastBombExplodedEventArgs());
         }
+        /*
+         * <summary>
+         * I added this Destroy delay mainly to give the bomb a chance to use the explode animation before it is destroyed.
+         * One of its fun side effects was that the player could keep hitting the bomb before it explodes, allowing it to spawn smaller bombs and letting the player earn more points.
+         * I decided to keep this behavior so that every playthrough could have a different result and not just the same one.
+         * Also, I think it's more fun and interesting to allow the player to modify the level difficulty levels and reward them accordingly.
+         * So it might seem like a bug, but for me, its a nice feature :) 
+         * </summary>
+         */
         _animator.SetBool("Explode", true);
         bombRigidbody.isKinematic = true;
         bombRigidbody.velocity = Vector2.zero;
