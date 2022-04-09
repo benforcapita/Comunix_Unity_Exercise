@@ -40,10 +40,9 @@ namespace Player
             UniRx.MessageBroker.Default.Publish(new VerticalPlayerMoveEventArgs(joystickMovement.y));
         }
 
-        private static void Move()
+        private void Move()
         {
             UniRx.MessageBroker.Default.Publish(new PlayerAttackEventArgs(Input.GetAxisRaw("Fire1")));
-
             UniRx.MessageBroker.Default.Publish(Input.GetAxisRaw("Horizontal") != 0
                 ? new HorizontalPlayerMoveEventArgs(Input.GetAxisRaw("Horizontal"))
                 : new HorizontalPlayerMoveEventArgs(0));

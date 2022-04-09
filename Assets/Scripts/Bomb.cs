@@ -23,6 +23,7 @@ public class Bomb : MonoBehaviour
     void Start()
     {
         bombRigidbody.AddForce(bombForce, ForceMode2D.Impulse);
+        MessageBroker.Default.Publish(new InitBombEventArgs(gameObject));
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -38,12 +39,21 @@ public class Bomb : MonoBehaviour
             var randomY = UnityEngine.Random.Range(-5f, 5f);
             ball1.GetComponent<Bomb>().bombForce = new Vector2(randomX, randomY);
             ball2.GetComponent<Bomb>().bombForce = new Vector2(-randomX, -randomY);
+          
+        }
+        else
+        {
+            MessageBroker.Default.Publish(new LastBombExplodedEventArgs());
         }
         _animator.SetBool("Explode", true);
         bombRigidbody.isKinematic = true;
         bombRigidbody.velocity = Vector2.zero;
-        MessageBroker.Default.Publish(new BombHitEventArgs(bombValue));
         Destroy(gameObject, 0.8f);
 
+    }
+
+    private void OnDestroy()
+    {
+        MessageBroker.Default.Publish(new BombHitEventArgs(bombValue));
     }
 }

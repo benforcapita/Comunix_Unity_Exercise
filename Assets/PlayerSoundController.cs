@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Player;
+using Sirenix.OdinInspector;
 using UniRx;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -11,35 +12,60 @@ using UnityEngine.Serialization;
  */
 public class PlayerSoundController : MonoBehaviour
 {
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip walkSound;
-    private IDisposable subscription = null;
+    [BoxGroup("WalkSound")] [SerializeField] private AudioSource walkAudioSource;
+   [BoxGroup("WalkSound")][SerializeField] private AudioClip walkSound;
+   [BoxGroup("WalkSound")] [SerializeField] private float speedWalkSound;
+   [BoxGroup("AttackSound")] [SerializeField] private AudioSource AttackAudioSource;
+   [BoxGroup("AttackSound")][SerializeField] private AudioClip attackSound;
+   [BoxGroup("AttackSound")] [SerializeField] private float AttackSoundSpeed;
+    
+    private IDisposable walkSoundsubscription = null;
+    private IDisposable attackSoundsubscription = null;
     
     private void OnEnable()
     {
-       subscription =   MessageBroker.Default.Receive<HorizontalPlayerMoveEventArgs>().ObserveOnMainThread().Subscribe(WalkingSound);
-        audioSource.clip = walkSound;
+        walkSoundsubscription =   MessageBroker.Default.Receive<HorizontalPlayerMoveEventArgs>().ObserveOnMainThread().Subscribe(WalkingSound);
+        attackSoundsubscription =   MessageBroker.Default.Receive<PlayerAttackEventArgs>().ObserveOnMainThread().Subscribe(AttackSound);
+       walkAudioSource.clip = walkSound;
+       AttackAudioSource.clip = attackSound;
+    }
+
+    private void AttackSound(PlayerAttackEventArgs obj)
+    {
+        if(AttackAudioSource.isPlaying)
+            return;
+        if (obj.fireAxis > 0)
+        {
+            AttackAudioSource.Play();
+            AttackAudioSource.pitch = speedWalkSound;
+        }
+        else
+        { 
+            AttackAudioSource.Pause();
+        }
     }
 
     private void WalkingSound(HorizontalPlayerMoveEventArgs obj)
     {
         if (obj.AxisValue != 0)
         {
-            if(audioSource.isPlaying)
+            if(walkAudioSource.isPlaying)
                 return;
-            audioSource.loop = true;
-            audioSource.Play();
+            walkAudioSource.loop = true;
+            walkAudioSource.Play();
+            walkAudioSource.pitch = speedWalkSound;
         }
         else
         { 
-            audioSource.loop = false;
-            audioSource.Pause();
+            walkAudioSource.loop = false;
+            walkAudioSource.Pause();
         }
       
     }
 
     private void OnDisable()
     {
-        subscription.Dispose();
+        walkSoundsubscription.Dispose();
+        attackSoundsubscription.Dispose();
     }
 }
