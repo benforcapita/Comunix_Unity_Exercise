@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be58e8f106ca9264db512ac44dc7c7cd, type: 3}
-  m_Name: ScoreVairable
+  m_Script: {fileID: 188390376, guid: a4865f1ab4504ed8a368670db22f409c, type: 3}
+  m_Name: ImportSettingsConfig
   m_EditorClassIdentifier: 
-  initialValue: 0
-  updateValue: 0
+  automateBeforeBuild: 1
